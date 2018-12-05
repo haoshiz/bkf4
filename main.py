@@ -1,17 +1,10 @@
-################################################################################
-# Copyright (C) 2012-2013 Leap Motion, Inc. All rights reserved.               #
-# Leap Motion proprietary and confidential. Not for distribution.              #
-# Use subject to the terms of the Leap Motion SDK Agreement available at       #
-# https://developer.leapmotion.com/sdk_agreement, or another agreement         #
-# between Leap Motion and you, your company or other organization.             #
-################################################################################
+
 
 import Leap, sys, thread, time, pynput
 import Tkinter as tk
 import math
 import time
 import serial
-from Leap import CircleGesture, KeyTapGesture, ScreenTapGesture, SwipeGesture
 
 
 class SampleListener(Leap.Listener):
@@ -19,8 +12,7 @@ class SampleListener(Leap.Listener):
     velocity_y = 0
     velocity_z = 0
     flag = 0
-    #finger_names = ['Thumb', 'Index', 'Middle', 'Ring', 'Pinky']
-    #bone_names = ['Metacarpal', 'Proximal', 'Intermediate', 'Distal']
+
     state_names = ['STATE_INVALID', 'STATE_START', 'STATE_UPDATE', 'STATE_END']
 
     def on_init(self, controller):
@@ -45,8 +37,6 @@ class SampleListener(Leap.Listener):
     def on_frame(self, controller):
         # Get the most recent frame and report some basic information
         frame = controller.frame()
-        # try with mouse
-        mouse = pynput.mouse.Controller()
 
         # Get hands
         for hand in frame.hands:
