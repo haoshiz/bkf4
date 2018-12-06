@@ -52,6 +52,7 @@ class SampleListener(Leap.Listener):
             self.velocity_x = velocity.x
             self.velocity_y = velocity.y
             self.velocity_z = velocity.z
+            self.position_z = position.z
             if abs(velocity.x) < 50 and abs(velocity.y) < 50:
                 self.flag = 0
                 self.velocity_x = 0
@@ -91,7 +92,7 @@ def main():
     canvas = tk.Canvas(window, width=600, height=600)
 
     oval = canvas.create_oval(400, 400, 430, 430, fill='green')
-    button_shape =canvas.create_rectangle(220, 260, 380, 340, fill='red')
+    button_shape = canvas.create_rectangle(220, 260, 380, 340, fill='red')
     canvas.tag_lower(button_shape)
     window.title('my app')
 
@@ -109,7 +110,6 @@ def main():
     def collision():
         a = canvas.find_overlapping(220, 260, 380, 340)
         zz = listener.velocity_z
-        zzz = listener.velocity_z
 
         #state = "state2"
         if len(a) == 2 and main.y == 0:
@@ -121,7 +121,7 @@ def main():
                 ser.write('b')
                 print 'b'
                 main.signal_flag_b = False
-            if zz < -100:
+            if zz < -100 and listener.position_z < 0:
 
 
                 main.y = 1
@@ -136,7 +136,7 @@ def main():
                 ser.write('a')
                 print 'a'
                 main.signal_flag_a = False
-            if zz > 100:
+            if zz > 250:
                 main.y = 2
 
         if len(a) == 2 and main.y == 2:
