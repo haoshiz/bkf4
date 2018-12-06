@@ -92,8 +92,13 @@ def main():
     canvas = tk.Canvas(window, width=600, height=600)
 
     oval = canvas.create_oval(400, 400, 430, 430, fill='green')
+
+    button_label = canvas.create_text(300, 300, text='Button', font=('Helvetica', 36), fill='white')
+
     button_shape = canvas.create_rectangle(220, 260, 380, 340, fill='red')
+    #canvas.tag_raise(button_label)
     canvas.tag_lower(button_shape)
+
     window.title('my app')
 
     window.geometry('600x600')
@@ -107,12 +112,13 @@ def main():
     main.signal_flag_a = True
     main.signal_flag_c = True
     main.signal_flag_off = True
+
     def collision():
         a = canvas.find_overlapping(220, 260, 380, 340)
         zz = listener.velocity_z
 
         #state = "state2"
-        if len(a) == 2 and main.y == 0:
+        if len(a) == 3 and main.y == 0:
             main.signal_flag_off = True
             text_content.set('Hover')
             canvas.itemconfig(button_shape, fill='pink')
@@ -126,7 +132,7 @@ def main():
 
                 main.y = 1
 
-        if len(a) == 2 and main.y == 1:
+        if len(a) == 3 and main.y == 1:
 
             text_content.set('Pressed')
             canvas.itemconfig(button_shape, fill='blue')
@@ -139,7 +145,7 @@ def main():
             if zz > 250:
                 main.y = 2
 
-        if len(a) == 2 and main.y == 2:
+        if len(a) == 3 and main.y == 2:
             #send c
 
 
@@ -149,7 +155,7 @@ def main():
                 ser.write('c')
                 print 'c'
                 main.signal_flag_c = False
-        if len(a) != 2:
+        if len(a) != 3:
             if main.signal_flag_off:
                 ser.write('c')
                 main.signal_flag_off = False
@@ -159,25 +165,6 @@ def main():
             main.signal_flag_b = True
             main.signal_flag_a = True
             main.signal_flag_c = True
-
-
-
-        '''
-        elif len(a) == 2 and state == "state2":
-            text_content.set('Click')
-            if zzz > 50:
-                state = "state3"
-        elif len(a) == 2 and state == "state3":
-            text_content.set('Release')
-            state = "state1"
-        '''
-
-
-            #send b
-
-
-        #if len(a) == 2 and state
-
 
     def move():
         speed = 5
@@ -191,29 +178,23 @@ def main():
         #print "y %f" % movey
         if listener.flag == 1:
             canvas.move(oval, movex, movey)
-    label = tk.Label(window, textvariable=text_content, text="This is TK", bg='red', width=15, height=2)
-    #button = tk.Button(window, text="Button 1", width=15, height=5)
+            listener.flag = 0
+    label = tk.Label(window, textvariable=text_content, text="This is TK", font=('Times', 24), width=15, height=2)
 
-    #button.pack()
-
-    #button.bind("<Enter>", on_enter)
-    #button.bind("<Button-1>", hit_me)
-    #canvas.bind("<B1-Motion>", move)
-    #canvas.update()
     label.pack()
     canvas.pack()
     # Keep this process running until Enter is pressed
     #print "Press Enter to quit..."
 
     while True:
+
         move()
         collision()
         window.update_idletasks()
         window.update()
-        #canvas.update()
+
 
 
 if __name__ == "__main__":
 
     main()
-
