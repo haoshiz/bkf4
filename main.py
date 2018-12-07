@@ -127,7 +127,7 @@ def main():
                 ser.write('b')
                 print 'b'
                 main.signal_flag_b = False
-            if zz < -100 and listener.position_z < 0:
+            if zz < -80 and listener.position_z < 0:
 
 
                 main.y = 1
@@ -142,7 +142,7 @@ def main():
                 ser.write('a')
                 print 'a'
                 main.signal_flag_a = False
-            if zz > 250:
+            if zz > 150 and listener.position_z > 0:
                 main.y = 2
 
         if len(a) == 3 and main.y == 2:
@@ -158,6 +158,7 @@ def main():
         if len(a) != 3:
             if main.signal_flag_off:
                 ser.write('c')
+                print 'c'
                 main.signal_flag_off = False
             text_content.set('Not detected')
             main.y = 0
